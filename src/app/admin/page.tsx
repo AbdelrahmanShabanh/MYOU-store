@@ -47,11 +47,11 @@ export default function AdminDashboardPage() {
   const [timeRange, setTimeRange] = useState('month');
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Dashboard</h1>
         <select
-          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
+          className="w-full sm:w-auto px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
         >
@@ -62,9 +62,9 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Revenue Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-green-100 dark:bg-green-900 rounded-full">
               <FiDollarSign className="h-6 w-6 text-green-600 dark:text-green-400" />
@@ -79,7 +79,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Orders Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
               <FiShoppingBag className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Customers Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-full">
               <FiUsers className="h-6 w-6 text-purple-600 dark:text-purple-400" />
@@ -109,7 +109,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Products Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-pink-100 dark:bg-pink-900 rounded-full">
               <FiPackage className="h-6 w-6 text-pink-600 dark:text-pink-400" />
@@ -124,9 +124,10 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
+      {/* Recent Orders and Low Stock Products */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Orders */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-medium text-gray-900 dark:text-white">Recent Orders</h2>
             <Link href="/admin/orders" className="text-sm text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300">
@@ -188,7 +189,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Low Stock Products */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-medium text-gray-900 dark:text-white">Low Stock Products</h2>
             <Link href="/admin/products" className="text-sm text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300">
@@ -233,11 +234,13 @@ export default function AdminDashboardPage() {
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        product.stock <= 2 
-                          ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' 
-                          : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                        product.stock <= 0
+                          ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                          : product.stock < product.threshold
+                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                            : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                       }`}>
-                        {product.stock <= 2 ? 'Critical' : 'Low'}
+                        {product.stock <= 0 ? 'Out of Stock' : product.stock < product.threshold ? 'Low Stock' : 'In Stock'}
                       </span>
                     </td>
                   </tr>
@@ -251,7 +254,7 @@ export default function AdminDashboardPage() {
       {/* Quick Actions */}
       <div className="mt-8">
         <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Link href="/admin/products/new" className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <div className="p-3 bg-pink-100 dark:bg-pink-900 rounded-full mr-4">
               <FiPackage className="h-6 w-6 text-pink-600 dark:text-pink-400" />

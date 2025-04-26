@@ -37,7 +37,7 @@ export default function AdminLayout({
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 transform 
                       ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-                      transition-transform duration-300 ease-in-out`}>
+                      transition-transform duration-300 ease-in-out lg:translate-x-0`}>
         <div className="flex items-center justify-between h-16 px-4 border-b dark:border-gray-700">
           <Link href="/admin" className="flex items-center space-x-3">
             <Image
@@ -52,13 +52,13 @@ export default function AdminLayout({
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="p-2 rounded-md text-gray-500 hover:text-gray-600 dark:text-gray-400 
-                     dark:hover:text-gray-300 focus:outline-none"
+                     dark:hover:text-gray-300 focus:outline-none lg:hidden"
           >
             <FiX className="w-6 h-6" />
           </button>
         </div>
 
-        <nav className="mt-5 px-2 space-y-1">
+        <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
           {navigation.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -97,14 +97,14 @@ export default function AdminLayout({
       </div>
 
       {/* Main content */}
-      <div className={`${isSidebarOpen ? 'ml-64' : 'ml-0'} transition-margin duration-300 ease-in-out`}>
+      <div className={`lg:pl-64 flex flex-col min-h-screen transition-all duration-300 ${isSidebarOpen ? 'pl-64' : 'pl-0'}`}>
         {/* Top header */}
-        <header className="bg-white dark:bg-gray-800 shadow-sm">
+        <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-40">
           <div className="flex items-center justify-between h-16 px-4">
             <button
               onClick={() => setIsSidebarOpen(true)}
               className={`p-2 rounded-md text-gray-500 hover:text-gray-600 dark:text-gray-400 
-                       dark:hover:text-gray-300 focus:outline-none ${isSidebarOpen ? 'hidden' : ''}`}
+                       dark:hover:text-gray-300 focus:outline-none ${isSidebarOpen ? 'hidden' : ''} lg:hidden`}
             >
               <FiMenu className="w-6 h-6" />
             </button>
@@ -118,7 +118,7 @@ export default function AdminLayout({
         </header>
 
         {/* Page content */}
-        <main className="p-6">
+        <main className="flex-1 p-4 lg:p-6 overflow-x-hidden">
           {children}
         </main>
       </div>

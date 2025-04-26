@@ -7,10 +7,16 @@ import { updateProduct } from '@/store/slices/productsSlice';
 import { FiSave, FiX } from 'react-icons/fi';
 import Link from 'next/link';
 
-export default function EditProductPage({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default function EditProductPage({ params }: PageProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.products?.items || []);
+  const resolvedParams = use(params);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -24,7 +30,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
   const [errors, setErrors] = useState<Record<string, string>>({});
   
   useEffect(() => {
-    const product = products.find(p => p.id === params.id);
+    const product = products.find(p => p.id === resolvedParams.id);
     if (product) {
       setFormData({
         name: product.name,
@@ -37,7 +43,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
     } else {
       router.push('/admin/products');
     }
-  }, [params.id, products, router]);
+  }, [resolvedParams.id, products, router]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -95,7 +101,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
     }
     
     const updatedProduct = {
-      id: params.id,
+      id: resolvedParams.id,
       name: formData.name,
       description: formData.description,
       price: Number(formData.price),

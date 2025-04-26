@@ -15,7 +15,7 @@ const Navbar = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const wishlistItems = useAppSelector((state) => state.wishlist.items);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isAdmin, isAuthenticated, user } = useAuth();
+  const { isAdmin, isAuthenticated } = useAuth();
 
   const navLinks = [
     { href: '/collections/scarves', label: 'Scarves' },

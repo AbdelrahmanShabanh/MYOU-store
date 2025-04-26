@@ -24,7 +24,6 @@ const ProductCard = ({ id, name, price, image, isSoldOut }: ProductCardProps) =>
   const dispatch = useAppDispatch();
   const wishlistItems = useAppSelector((state) => state.wishlist.items);
   const isInWishlist = wishlistItems.some(item => item.id === id);
-  const [isAnimating, setIsAnimating] = useState(false);
   const productRef = useRef<HTMLDivElement>(null);
 
   const handleAddToCart = () => {

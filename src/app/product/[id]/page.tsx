@@ -279,7 +279,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               </div>
               <p className="mt-6 text-sm text-gray-600 dark:text-gray-400">
                 For the best fit, please measure yourself and compare with the size chart above. 
-                If you're between sizes, we recommend choosing the larger size.
+                If you&apos;re between sizes, we recommend choosing the larger size.
               </p>
             </motion.div>
           </div>

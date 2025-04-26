@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useAppSelector } from '@/store/hooks';
-import { FiShoppingBag, FiCheck, FiCreditCard, FiDollarSign, FiGift, FiTruck } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiCheck, FiCreditCard, FiDollarSign, FiGift } from 'react-icons/fi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 

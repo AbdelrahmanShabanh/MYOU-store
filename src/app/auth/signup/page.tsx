@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { FiUser, FiMail, FiLock, FiPhone } from 'react-icons/fi';
 
 export default function SignUpPage() {
@@ -22,11 +21,10 @@ export default function SignUpPage() {
 
     try {
       // Here you would typically make an API call to create the user
-      // For now, we'll just simulate it
       console.log('Sign up data:', formData);
       router.push('/auth/signin');
     } catch (err) {
-      setError('Failed to create account. Please try again.');
+      setError(`Registration failed: ${err instanceof Error ? err.message : 'An error occurred during registration.'}`);
     }
   };
 

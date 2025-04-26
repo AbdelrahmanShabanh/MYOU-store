@@ -24,10 +24,6 @@ type ValidCategory = typeof VALID_CATEGORIES[number];
 
 type Category = 'burkini' | 'coverups' | 'turbans' | 'scarves' | 'kimonos' | 'accessories';
 
-type CategoryProducts = {
-  [K in ValidCategory]: Product[];
-};
-
 // This would typically come from your database or API
 const SAMPLE_PRODUCTS: Record<Category, Product[]> = {
   burkini: [],

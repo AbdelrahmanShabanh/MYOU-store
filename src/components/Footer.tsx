@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { FiInstagram, FiFacebook, FiHeart } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 

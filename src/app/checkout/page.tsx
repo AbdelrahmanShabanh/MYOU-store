@@ -186,12 +186,12 @@ export default function CheckoutPage() {
                 )}
                 <label className="flex items-center cursor-pointer">
                   <input type="radio" name="payment" value="vodafone" checked={paymentMethod==='vodafone'} onChange={()=>setPaymentMethod('vodafone')} className="form-radio text-pink-600" />
-                  <img src="/icons/da825f86efb52423c2785be6a2dd9124.jpg" alt="Vodafone Cash" className="ml-2 mr-2 h-5 w-8 object-contain" />
+                  <Image src="/icons/da825f86efb52423c2785be6a2dd9124.jpg" alt="Vodafone Cash" width={32} height={20} className="ml-2 mr-2 h-5 w-8 object-contain" />
                   <span>Vodafone Cash</span>
                 </label>
                 <label className="flex items-center cursor-pointer">
                   <input type="radio" name="payment" value="instapay" checked={paymentMethod==='instapay'} onChange={()=>setPaymentMethod('instapay')} className="form-radio text-pink-600" />
-                  <img src="/icons/images.jpeg" alt="InstaPay" className="ml-2 mr-2 h-5 w-8 object-contain" />
+                  <Image src="/icons/images.jpeg" alt="InstaPay" width={32} height={20} className="ml-2 mr-2 h-5 w-8 object-contain" />
                   <span>InstaPay</span>
                 </label>
                 <label className="flex items-center cursor-pointer">

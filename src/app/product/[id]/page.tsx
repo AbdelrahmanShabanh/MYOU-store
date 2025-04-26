@@ -5,7 +5,6 @@ import { use } from 'react';
 import Image from 'next/image';
 import { useAppDispatch } from '@/store/hooks';
 import { addToCart } from '@/store/slices/cartSlice';
-import { toggleCart } from '@/store/slices/uiSlice';
 import { FiShoppingBag, FiTruck, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';

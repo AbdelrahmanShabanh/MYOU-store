@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FiTrendingUp, FiShoppingBag, FiUsers, FiDollarSign, FiPackage, FiAlertCircle } from 'react-icons/fi';
+import { FiShoppingBag, FiUsers, FiDollarSign, FiPackage } from 'react-icons/fi';
 import Link from 'next/link';
 
 // Mock data for dashboard

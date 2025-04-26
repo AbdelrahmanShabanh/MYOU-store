@@ -35,7 +35,7 @@ export default function AdminSettingsPage() {
     }
   });
 
-  const handleChange = (section: string, field: string, value: any) => {
+  const handleChange = (section: string, field: string, value: string | number | boolean) => {
     setSettings(prev => ({
       ...prev,
       [section]: {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FiUser, FiMail, FiLock, FiEdit2, FiSave, FiX } from 'react-icons/fi';
+import { FiUser, FiMail, FiLock, FiEdit2, FiSave } from 'react-icons/fi';
 
 export default function AdminProfile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -11,11 +11,6 @@ export default function AdminProfile() {
     role: 'Administrator',
     joinDate: 'January 1, 2023',
   });
-
-  const handleSave = () => {
-    // Here you would typically make an API call to update the profile
-    setIsEditing(false);
-  };
 
   return (
     <div className="space-y-6">

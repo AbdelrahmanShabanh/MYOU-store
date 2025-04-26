@@ -24,7 +24,7 @@ export default function SignInPage() {
       await login(formData.email, formData.password);
       router.push('/');
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      setError(`Login failed: ${err instanceof Error ? err.message : 'Invalid email or password. Please try again.'}`);
     }
   };
 

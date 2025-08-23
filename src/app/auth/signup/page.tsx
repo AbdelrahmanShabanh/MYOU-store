@@ -1,30 +1,53 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { FiUser, FiMail, FiLock, FiPhone } from 'react-icons/fi';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { FiUser, FiMail, FiLock, FiPhone } from "react-icons/fi";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    phone: '',
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
-      // Here you would typically make an API call to create the user
-      console.log('Sign up data:', formData);
-      router.push('/auth/signin');
+      const res = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+        }/api/auth/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            // phone: formData.phone, // Add to backend if needed
+          }),
+        }
+      );
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Registration failed");
+      }
+      router.push("/auth/signin");
     } catch (err) {
-      setError(`Registration failed: ${err instanceof Error ? err.message : 'An error occurred during registration.'}`);
+      setError(
+        `Registration failed: ${
+          err instanceof Error
+            ? err.message
+            : "An error occurred during registration."
+        }`
+      );
     }
   };
 
@@ -45,8 +68,11 @@ export default function SignUpPage() {
           Create your account
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-          Or{' '}
-          <Link href="/auth/signin" className="font-medium text-pink-600 hover:text-pink-500">
+          Or{" "}
+          <Link
+            href="/auth/signin"
+            className="font-medium text-pink-600 hover:text-pink-500"
+          >
             sign in to your account
           </Link>
         </p>
@@ -62,7 +88,10 @@ export default function SignUpPage() {
             )}
 
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Full Name
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -75,7 +104,9 @@ export default function SignUpPage() {
                   type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 
                            rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500 
                            dark:bg-gray-700 dark:text-white sm:text-sm"
@@ -85,7 +116,10 @@ export default function SignUpPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Email address
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -99,7 +133,9 @@ export default function SignUpPage() {
                   autoComplete="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 
                            rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500 
                            dark:bg-gray-700 dark:text-white sm:text-sm"
@@ -109,7 +145,10 @@ export default function SignUpPage() {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Phone Number
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -122,7 +161,9 @@ export default function SignUpPage() {
                   type="tel"
                   required
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 
                            rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500 
                            dark:bg-gray-700 dark:text-white sm:text-sm"
@@ -132,7 +173,10 @@ export default function SignUpPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Password
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -146,7 +190,9 @@ export default function SignUpPage() {
                   autoComplete="new-password"
                   required
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 
                            rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500 
                            dark:bg-gray-700 dark:text-white sm:text-sm"
@@ -170,4 +216,4 @@ export default function SignUpPage() {
       </div>
     </div>
   );
-} 
+}

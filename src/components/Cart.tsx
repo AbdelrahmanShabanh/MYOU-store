@@ -20,6 +20,7 @@ const Cart = () => {
 
   // Calculate total price
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const totalShipping = cartItems.reduce((sum, item) => sum + ((item.shippingCost || 0) * item.quantity), 0);
 
   useEffect(() => {
     // Simulate loading time
@@ -192,11 +193,11 @@ const Cart = () => {
                 </div>
                 <div className="flex justify-between mb-6">
                   <span className="text-lg font-medium text-gray-700 dark:text-gray-300">Shipping</span>
-                  <span className="text-lg font-bold text-gray-900 dark:text-white">Free</span>
+                  <span className="text-lg font-bold text-gray-900 dark:text-white">LE {totalShipping.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between mb-6 pb-2 border-b dark:border-gray-700">
                   <span className="text-xl font-bold text-gray-900 dark:text-white">Total</span>
-                  <span className="text-xl font-bold text-pink-600 dark:text-pink-500">${total.toFixed(2)}</span>
+                  <span className="text-xl font-bold text-pink-600 dark:text-pink-500">LE {(total + totalShipping).toFixed(2)}</span>
                 </div>
                 <button
                   onClick={handleCheckout}

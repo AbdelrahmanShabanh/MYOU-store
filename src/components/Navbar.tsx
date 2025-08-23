@@ -1,35 +1,49 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { FiShoppingBag, FiHeart, FiUser, FiMenu, FiX, FiSettings } from 'react-icons/fi';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { toggleCart } from '@/store/slices/uiSlice';
-import { toggleWishlist } from '@/store/slices/wishlistSlice';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/contexts/AuthContext';
+import Link from "next/link";
+import Image from "next/image";
+import {
+  FiShoppingBag,
+  FiHeart,
+  FiUser,
+  FiMenu,
+  FiX,
+  FiSettings,
+} from "react-icons/fi";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { toggleCart } from "@/store/slices/uiSlice";
+import { toggleWishlist } from "@/store/slices/wishlistSlice";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { hydrateCart } from "@/store/slices/cartSlice";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
+  const cartHydrated = useAppSelector((state) => state.cart.isHydrated);
   const wishlistItems = useAppSelector((state) => state.wishlist.items);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAdmin, isAuthenticated } = useAuth();
 
+  // Hydrate cart on client side
+  useEffect(() => {
+    dispatch(hydrateCart());
+  }, [dispatch]);
+
   const navLinks = [
-    { href: '/collections/scarves', label: 'Scarves' },
-    { href: '/collections/kimonos', label: 'Kimonos' },
-    { href: '/collections/burkini', label: 'Burkini' },
-    { href: '/collections/coverups', label: 'Cover Ups' },
-    { href: '/collections/turbans', label: 'Turban Cap' },
-    { href: '/collections/accessories', label: 'Hats & Clutches' },
+    { href: "/collections/scarves", label: "Scarves" },
+    { href: "/collections/kimonos", label: "Kimonos" },
+    { href: "/collections/burkini", label: "Burkini" },
+    { href: "/collections/coverups", label: "Cover Ups" },
+    { href: "/collections/turbans", label: "Turban Cap" },
+    { href: "/collections/accessories", label: "Hats & Clutches" },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-sm z-40">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16">
-        <div className="flex items-center justify-between h-full">
+    <header className="fixed top-0 right-0 left-0 z-40 bg-white shadow-sm dark:bg-gray-900">
+      <nav className="px-4 mx-auto max-w-7xl h-16 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-full">
           {/* Mobile menu button */}
           <div className="flex items-center md:hidden">
             <button
@@ -41,7 +55,10 @@ const Navbar = () => {
           </div>
 
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-pink-600 dark:text-pink-500">
+          <Link
+            href="/"
+            className="text-2xl font-bold text-pink-600 dark:text-pink-500"
+          >
             <Image
               src="/icons/myoulog.png"
               alt="MYOU"
@@ -53,12 +70,12 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden items-center space-x-8 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-gray-600 hover:text-pink-600 dark:text-gray-300 dark:hover:text-pink-500 text-sm font-medium"
+                className="text-sm font-medium text-gray-600 hover:text-pink-600 dark:text-gray-300 dark:hover:text-pink-500"
               >
                 {link.label}
               </Link>
@@ -66,9 +83,9 @@ const Navbar = () => {
             {isAdmin && (
               <Link
                 href="/admin"
-                className="text-gray-600 hover:text-pink-600 dark:text-gray-300 dark:hover:text-pink-500 text-sm font-medium flex items-center"
+                className="flex items-center text-sm font-medium text-gray-600 hover:text-pink-600 dark:text-gray-300 dark:hover:text-pink-500"
               >
-                <FiSettings className="mr-1 h-4 w-4" />
+                <FiSettings className="mr-1 w-4 h-4" />
                 Admin
               </Link>
             )}
@@ -78,30 +95,30 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => dispatch(toggleWishlist())}
-              className="p-2 text-gray-600 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-500 relative"
+              className="relative p-2 text-gray-600 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-500"
             >
               <FiHeart className="w-6 h-6" />
-              {wishlistItems.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              {cartHydrated && wishlistItems.length > 0 && (
+                <span className="flex absolute -top-1 -right-1 justify-center items-center w-4 h-4 text-xs text-white bg-pink-600 rounded-full">
                   {wishlistItems.length}
                 </span>
               )}
             </button>
             <button
               onClick={() => dispatch(toggleCart())}
-              className="p-2 text-gray-600 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-500 relative"
+              className="relative p-2 text-gray-600 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-500"
               data-cart-icon
             >
               <FiShoppingBag className="w-6 h-6" />
-              {cartItems.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              {cartHydrated && cartItems.length > 0 && (
+                <span className="flex absolute -top-1 -right-1 justify-center items-center w-4 h-4 text-xs text-white bg-pink-600 rounded-full">
                   {cartItems.length}
                 </span>
               )}
             </button>
             {isAuthenticated ? (
               <Link
-                href="/account"
+                href="/auth/signin"
                 className="p-2 text-gray-600 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-500"
               >
                 <FiUser className="w-6 h-6" />
@@ -120,19 +137,19 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         <AnimatePresence>
           {isMobileMenuOpen && (
-            <motion.div 
+            <motion.div
               initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
+              animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden overflow-hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-md"
+              className="overflow-hidden bg-white border-t border-gray-200 shadow-md md:hidden dark:border-gray-700 dark:bg-gray-900"
             >
               <div className="py-2">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block px-4 py-2 text-gray-600 hover:text-pink-600 dark:text-gray-300 dark:hover:text-pink-500 text-sm font-medium"
+                    className="block px-4 py-2 text-sm font-medium text-gray-600 hover:text-pink-600 dark:text-gray-300 dark:hover:text-pink-500"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}
@@ -141,10 +158,10 @@ const Navbar = () => {
                 {isAdmin && (
                   <Link
                     href="/admin"
-                    className="block px-4 py-2 text-gray-600 hover:text-pink-600 dark:text-gray-300 dark:hover:text-pink-500 text-sm font-medium flex items-center"
+                    className="block flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-pink-600 dark:text-gray-300 dark:hover:text-pink-500"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <FiSettings className="mr-2 h-4 w-4" />
+                    <FiSettings className="mr-2 w-4 h-4" />
                     Admin Dashboard
                   </Link>
                 )}
@@ -157,4 +174,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

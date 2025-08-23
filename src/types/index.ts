@@ -14,6 +14,20 @@ export interface WishlistItem {
   image: string;
 }
 
+export interface Product {
+  id: string;
+  _id?: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  images?: string[];
+  category: string;
+  stock: number;
+  isSoldOut?: boolean;
+  discount?: number;
+}
+
 export interface RootState {
   cart: {
     items: CartItem[];
@@ -27,14 +41,9 @@ export interface RootState {
     wishlistOpen: boolean;
     mobileMenuOpen: boolean;
   };
+  products: {
+    items: Product[];
+    loading: boolean;
+    error: string | null;
+  };
 }
-
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  description?: string;
-  features?: string[];
-  isSoldOut?: boolean;
-} 

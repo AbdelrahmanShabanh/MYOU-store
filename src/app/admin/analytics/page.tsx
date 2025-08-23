@@ -34,11 +34,11 @@ export default function AdminAnalyticsPage() {
   const BarChart = ({ data, color }: { data: number[], color: string }) => {
     const max = Math.max(...data);
     return (
-      <div className="h-24 flex items-end space-x-1">
+      <div className="flex items-end space-x-1 h-24">
         {data.map((value, index) => (
           <div
             key={index}
-            className={`w-6 ${color} rounded-t`}
+            className={`w-6 rounded-t ${color}`}
             style={{ height: `${(value / max) * 100}%` }}
           />
         ))}
@@ -51,7 +51,7 @@ export default function AdminAnalyticsPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Analytics</h1>
         <select
-          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
+          className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
         >
@@ -61,18 +61,18 @@ export default function AdminAnalyticsPage() {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
         {/* Revenue Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-green-100 dark:bg-green-900 rounded-full">
-              <FiDollarSign className="h-6 w-6 text-green-600 dark:text-green-400" />
+        <div className="p-6 bg-white rounded-lg shadow dark:bg-gray-800">
+          <div className="flex justify-between items-center mb-4">
+            <div className="p-3 bg-green-100 rounded-full dark:bg-green-900">
+              <FiDollarSign className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <span className={`text-sm font-medium ${mockData.revenue.change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
               {mockData.revenue.change >= 0 ? '+' : ''}{mockData.revenue.change}%
             </span>
           </div>
-          <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">Revenue</h3>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Revenue</h3>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">${mockData.revenue.total.toLocaleString()}</p>
           <div className="mt-4">
             <BarChart data={mockData.revenue.chart} color="bg-green-500" />
@@ -80,16 +80,16 @@ export default function AdminAnalyticsPage() {
         </div>
 
         {/* Orders Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
-              <FiShoppingBag className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+        <div className="p-6 bg-white rounded-lg shadow dark:bg-gray-800">
+          <div className="flex justify-between items-center mb-4">
+            <div className="p-3 bg-blue-100 rounded-full dark:bg-blue-900">
+              <FiShoppingBag className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <span className={`text-sm font-medium ${mockData.orders.change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
               {mockData.orders.change >= 0 ? '+' : ''}{mockData.orders.change}%
             </span>
           </div>
-          <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">Orders</h3>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Orders</h3>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">{mockData.orders.total}</p>
           <div className="mt-4">
             <BarChart data={mockData.orders.chart} color="bg-blue-500" />
@@ -97,16 +97,16 @@ export default function AdminAnalyticsPage() {
         </div>
 
         {/* Customers Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-full">
-              <FiUsers className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+        <div className="p-6 bg-white rounded-lg shadow dark:bg-gray-800">
+          <div className="flex justify-between items-center mb-4">
+            <div className="p-3 bg-purple-100 rounded-full dark:bg-purple-900">
+              <FiUsers className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <span className={`text-sm font-medium ${mockData.customers.change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
               {mockData.customers.change >= 0 ? '+' : ''}{mockData.customers.change}%
             </span>
           </div>
-          <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">Customers</h3>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Customers</h3>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">{mockData.customers.total}</p>
           <div className="mt-4">
             <BarChart data={mockData.customers.chart} color="bg-purple-500" />
@@ -114,16 +114,16 @@ export default function AdminAnalyticsPage() {
         </div>
 
         {/* Products Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-pink-100 dark:bg-pink-900 rounded-full">
-              <FiTrendingUp className="h-6 w-6 text-pink-600 dark:text-pink-400" />
+        <div className="p-6 bg-white rounded-lg shadow dark:bg-gray-800">
+          <div className="flex justify-between items-center mb-4">
+            <div className="p-3 bg-pink-100 rounded-full dark:bg-pink-900">
+              <FiTrendingUp className="w-6 h-6 text-pink-600 dark:text-pink-400" />
             </div>
             <span className={`text-sm font-medium ${mockData.products.change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
               {mockData.products.change >= 0 ? '+' : ''}{mockData.products.change}%
             </span>
           </div>
-          <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">Products</h3>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Products</h3>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">{mockData.products.total}</p>
           <div className="mt-4">
             <BarChart data={mockData.products.chart} color="bg-pink-500" />
@@ -131,15 +131,15 @@ export default function AdminAnalyticsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Top Products */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Top Products</h2>
+        <div className="p-6 bg-white rounded-lg shadow dark:bg-gray-800">
+          <h2 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">Top Products</h2>
           <div className="space-y-4">
             {[1, 2, 3, 4, 5].map((item) => (
-              <div key={item} className="flex items-center justify-between">
+              <div key={item} className="flex justify-between items-center">
                 <div className="flex items-center">
-                  <div className="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-md"></div>
+                  <div className="w-10 h-10 bg-gray-200 rounded-md dark:bg-gray-700"></div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-900 dark:text-white">Product {item}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">{Math.floor(Math.random() * 100) + 50} sales</p>
@@ -154,11 +154,11 @@ export default function AdminAnalyticsPage() {
         </div>
 
         {/* Recent Orders */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Recent Orders</h2>
+        <div className="p-6 bg-white rounded-lg shadow dark:bg-gray-800">
+          <h2 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">Recent Orders</h2>
           <div className="space-y-4">
             {[1, 2, 3, 4, 5].map((item) => (
-              <div key={item} className="flex items-center justify-between">
+              <div key={item} className="flex justify-between items-center">
                 <div>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">Order #{1000 + item}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">

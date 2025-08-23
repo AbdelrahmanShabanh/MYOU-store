@@ -1,56 +1,66 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { FiEdit2, FiTrash2, FiUserPlus } from 'react-icons/fi';
-import { useAuth } from '@/contexts/AuthContext';
-
-// Mock user data - in a real app, this would come from your backend
-const mockUsers = [
-  {
-    id: '1',
-    name: 'Admin User',
-    email: 'admin@myou.com',
-    role: 'admin',
-    joinDate: '2023-01-15',
-    status: 'active'
-  },
-  {
-    id: '2',
-    name: 'John Doe',
-    email: 'john@example.com',
-    role: 'user',
-    joinDate: '2023-03-22',
-    status: 'active'
-  },
-  {
-    id: '3',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    role: 'user',
-    joinDate: '2023-05-10',
-    status: 'inactive'
-  }
-];
+import { useState, useEffect } from "react";
+import { FiEdit2, FiTrash2, FiUserPlus } from "react-icons/fi";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function AdminUsersPage() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRole, setSelectedRole] = useState('all');
-  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRole, setSelectedRole] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
   const { user: currentUser } = useAuth();
 
+  useEffect(() => {
+    async function fetchUsers() {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(
+          `${
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+          }/api/admin/users`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (!res.ok) throw new Error("Failed to fetch users");
+        const data = await res.json();
+        setUsers(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUsers();
+  }, []);
+
   // Filter users based on search term, role, and status
-  const filteredUsers = mockUsers.filter(user => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = selectedRole === 'all' || user.role === selectedRole;
-    const matchesStatus = selectedStatus === 'all' || user.status === selectedStatus;
+  const filteredUsers = users.filter((user) => {
+    const name = user?.name || "";
+    const email = user?.email || "";
+    const matchesSearch =
+      name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole = selectedRole === "all" || user.role === selectedRole;
+    const matchesStatus =
+      selectedStatus === "all" || user.status === selectedStatus;
     return matchesSearch && matchesRole && matchesStatus;
   });
+
+  if (loading) return <div>Loading users...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Users</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+          Users
+        </h1>
         <button className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-md flex items-center">
           <FiUserPlus className="mr-2" />
           Add User
@@ -96,31 +106,46 @@ export default function AdminUsersPage() {
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
                   User
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
                   Role
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
                   Join Date
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
                   Status
                 </th>
-                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {filteredUsers.map((user) => (
-                <tr key={user.id}>
+                <tr key={user._id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="h-10 w-10 flex-shrink-0 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
                         <span className="text-gray-500 dark:text-gray-400 font-medium">
-                          {user.name.charAt(0)}
+                          {user.name ? user.name.charAt(0) : "?"}
                         </span>
                       </div>
                       <div className="ml-4">
@@ -134,11 +159,13 @@ export default function AdminUsersPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      user.role === 'admin' 
-                        ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' 
-                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                    }`}>
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        user.role === "admin"
+                          ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+                          : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                      }`}
+                    >
                       {user.role}
                     </span>
                   </td>
@@ -146,16 +173,18 @@ export default function AdminUsersPage() {
                     {user.joinDate}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      user.status === 'active' 
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
-                        : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                    }`}>
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        user.status === "active"
+                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                          : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                      }`}
+                    >
                       {user.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    {user.id !== currentUser?.id && (
+                    {user._id !== currentUser?._id && (
                       <>
                         <button className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-4">
                           <FiEdit2 className="h-5 w-5" />
